@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Tyre | Heavy Duty Division</title>
     
+    <meta property="og:title" content="Global Tyre | Heavy Duty Division">
+    <meta property="og:description" content="Catálogo oficial y sistema de cotización B2B de llantas de alto tonelaje para flotas en Bolivia.">
+    <meta property="og:image" content="https://humbert9933-ux.github.io/Maxell/logo.jpg">
+    <meta property="og:url" content="https://humbert9933-ux.github.io/Maxell/">
+    <meta property="og:type" content="website">
+
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#dc2626">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3063/3063822.png">
+    <link rel="apple-touch-icon" href="logo.jpg">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
@@ -29,24 +35,14 @@
         .form-input:focus { border-color: var(--brand-red); outline: none; box-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
         select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='red' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
         
-        /* SISTEMA BLINDADO Y NUEVA ANIMACIÓN DE CARGA */
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--brand-black); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; background-image: url('https://www.transparenttextures.com/patterns/asphalt.png'); animation: forceHide 3s forwards; }
         @keyframes forceHide { 0% { opacity: 1; visibility: visible; } 80% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
         
-        /* Contenedor que agrupa la rueda y el logo */
         .loader-container { position: relative; width: 140px; height: 140px; display: flex; justify-content: center; align-items: center; margin-bottom: 2rem; }
-        
-        /* Rueda girando de fondo */
         .tire-spinner { position: absolute; width: 100%; height: 100%; border: 14px dashed #27272a; border-top-color: var(--brand-red); border-bottom-color: var(--brand-red); border-radius: 50%; animation: spin 1.5s linear infinite; box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 25px rgba(220, 38, 38, 0.3); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Logo con efecto latido en el centro */
         .logo-pulse { position: absolute; width: 85px; height: 85px; border-radius: 50%; object-fit: contain; background: white; border: 3px solid #18181b; z-index: 10; animation: heartbeat 1.2s infinite ease-in-out; }
-        @keyframes heartbeat { 
-            0% { transform: scale(0.9); box-shadow: 0 0 10px rgba(220, 38, 38, 0.4); } 
-            50% { transform: scale(1.1); box-shadow: 0 0 35px rgba(220, 38, 38, 1); } 
-            100% { transform: scale(0.9); box-shadow: 0 0 10px rgba(220, 38, 38, 0.4); } 
-        }
+        @keyframes heartbeat { 0% { transform: scale(0.9); box-shadow: 0 0 10px rgba(220, 38, 38, 0.4); } 50% { transform: scale(1.1); box-shadow: 0 0 35px rgba(220, 38, 38, 1); } 100% { transform: scale(0.9); box-shadow: 0 0 10px rgba(220, 38, 38, 0.4); } }
 
         #cart-modal { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .cart-open { transform: translateX(0%); }
