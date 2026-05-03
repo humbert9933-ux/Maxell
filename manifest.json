@@ -1,0 +1,19 @@
+{
+  "name": "Global Tyre Bolivia",
+  "short_name": "Global Tyre",
+  "description": "Distribución de llantas de alto tonelaje",
+  "start_url": "/Maxell/index.html",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#dc2626",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3063/3063822.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+
