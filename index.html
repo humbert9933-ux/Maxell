@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Tyre | Importación de Llantas Alto Tonelaje</title>
+    <title>Global Tyre | Heavy Duty Division</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#dc2626">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3063/3063822.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -11,29 +18,31 @@
         :root { --brand-red: #dc2626; --brand-black: #09090b; }
         body { 
             background: var(--brand-black); color: #fafafa; 
-            /* Textura de carretera/asfalto */
             background-image: url('https://www.transparenttextures.com/patterns/asphalt.png');
             background-attachment: fixed; font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
-        .glass { background: rgba(15, 15, 18, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(220, 38, 38, 0.15); }
+        .glass { background: rgba(15, 15, 18, 0.98); backdrop-filter: blur(12px); border: 1px solid rgba(220, 38, 38, 0.2); }
         .hero-bg { background: linear-gradient(180deg, rgba(220,38,38,0.25) 0%, rgba(9,9,11,1) 100%); }
         .product-card { transition: all 0.4s ease; border-top: 3px solid transparent; }
         .product-card:hover { transform: translateY(-8px); border-top-color: var(--brand-red); box-shadow: 0 15px 30px rgba(220, 38, 38, 0.1); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .form-input { background: #18181b; border: 1px solid #27272a; border-radius: 0.75rem; color: white; font-weight: 700; transition: 0.3s; }
+        .form-input:focus { border-color: var(--brand-red); outline: none; box-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
+        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='red' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
         
-        /* Selectores personalizados estilo Maxell Official */
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
-        }
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--brand-black); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; background-image: url('https://www.transparenttextures.com/patterns/asphalt.png'); transition: opacity 0.8s ease, visibility 0.8s ease; }
+        .tire-spinner { width: 100px; height: 100px; border: 12px dashed #27272a; border-top-color: var(--brand-red); border-bottom-color: var(--brand-red); border-radius: 50%; animation: spin 1.5s linear infinite; position: relative; box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 20px rgba(220, 38, 38, 0.3); }
+        .tire-spinner::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: #18181b; border: 4px solid #3f3f46; border-radius: 50%; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #cart-modal { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .cart-open { transform: translateX(0%); }
+        .cart-closed { transform: translateX(100%); }
+        .cart-overlay { transition: opacity 0.4s ease; }
+        .overlay-open { opacity: 1; pointer-events: auto; }
+        .overlay-closed { opacity: 0; pointer-events: none; }
         
-        /* Estilos de líneas de carretera desvanecidas */
         .road-line { position: fixed; width: 100%; height: 100%; top: 0; left: 0; opacity: 0.15; z-index: -1; pointer-events: none; }
-        .road-line::after { content: ''; position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 3px; height: 100%; background: repeating-linear-gradient(180deg, #facc15 0, #facc15 40px, transparent 40px, transparent 80px); }
     </style>
 </head>
 <body class="antialiased">
@@ -47,142 +56,289 @@
         <rect width="100%" height="100%" fill="url(#roadPattern)" />
     </svg>
 
-    <nav class="fixed w-full z-50 glass border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl font-black italic uppercase tracking-tighter">GLOBAL<span class="text-red-600">TYRE</span></span>
-            </div>
-            <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest text-zinc-400">
-                <a href="#" class="text-white hover:text-red-500 transition-colors">Inicio</a>
-                <a href="#catalogo" class="hover:text-red-500 transition-colors">Catálogo</a>
-                <a href="#contacto" class="hover:text-red-500 transition-colors">Contacto Flotas</a>
-            </div>
-            <a href="https://wa.me/59176395001" target="_blank" class="bg-red-600 text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-colors shadow-lg shadow-red-900/50">
-                Asesoría 24/7
-            </a>
-        </div>
-    </nav>
+    <div id="loader">
+        <div class="tire-spinner mb-6"></div>
+        <h2 class="text-white font-black italic text-2xl tracking-tighter uppercase mb-1">GLOBAL<span class="text-red-600">TYRE</span></h2>
+        <p class="text-zinc-500 text-[10px] uppercase font-bold tracking-[0.4em] animate-pulse">Optimizando Catálogo...</p>
+    </div>
 
-    <section class="relative pt-32 pb-20 flex flex-col items-center justify-center overflow-hidden hero-bg">
-        <div class="text-center z-10 px-6 max-w-4xl" data-aos="fade-up">
-            <span class="bg-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-red-600/30 mb-6 inline-block">División Transporte Pesado</span>
-            <h1 class="text-5xl md:text-7xl font-black uppercase mb-4 leading-none">Nacidos para la <br><span class="text-red-600 italic tracking-tighter">Excelencia</span></h1>
-            <p class="text-zinc-400 font-medium text-sm md:text-base mb-10 max-w-2xl mx-auto">Nuevo diseño de patrones de alta calidad. Mayor kilometraje, durabilidad extrema y máxima capacidad de carga para las rutas de Bolivia.</p>
-        </div>
-    </section>
+    <button onclick="toggleCart()" class="fixed bottom-6 right-6 bg-red-600 text-white p-4 rounded-full shadow-2xl shadow-red-900/50 z-40 hover:bg-red-700 transition-all active:scale-95 flex items-center gap-2 group">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <span id="cart-badge" class="bg-white text-red-600 font-black text-xs w-6 h-6 flex items-center justify-center rounded-full">0</span>
+    </button>
 
-    <div class="max-w-5xl mx-auto px-6 relative z-30 -mt-10 mb-16" id="catalogo">
-        <div class="glass p-6 md:p-8 rounded-[2rem] shadow-2xl">
-            <div class="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
-                <div class="w-2 h-6 bg-red-600 rounded-full"></div>
-                <h2 class="text-lg font-black uppercase tracking-widest">Selector de Llantas</h2>
-            </div>
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/80 z-50 overlay-closed backdrop-blur-sm"></div>
+    <div id="cart-modal" class="fixed top-0 right-0 w-full max-w-md h-full glass border-l border-white/10 z-50 cart-closed flex flex-col shadow-2xl">
+        
+        <div class="flex justify-between items-center p-6 border-b border-white/5 bg-zinc-900/80">
+            <h2 class="text-xl font-black uppercase tracking-widest italic">Mi Flota <span class="text-red-600">(Carrito)</span></h2>
+            <button onclick="toggleCart()" class="text-zinc-500 hover:text-white transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <p class="text-center text-zinc-500 text-xs font-bold uppercase tracking-widest mt-10">El carrito está vacío</p>
+        </div>
+
+        <div class="p-6 bg-zinc-950 border-t border-red-600/20">
+            <h3 class="text-[10px] font-black text-red-600 uppercase tracking-widest mb-4">Datos Logísticos</h3>
             
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <select id="filtroPosicion" class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full cursor-pointer transition-colors">
-                    <option value="TODAS">Posición (Todas)</option>
-                    <option value="DIRECCIÓN">Eje de Dirección</option>
-                    <option value="TRACCIÓN">Eje de Tracción</option>
-                </select>
-                
-                <select id="filtroAplicacion" class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full cursor-pointer transition-colors">
-                    <option value="TODAS">Aplicación (Todas)</option>
-                    <option value="Larga Distancia">Larga Distancia</option>
-                    <option value="On/Off Road">Mixta / Off-Road</option>
-                </select>
-
-                <input type="text" id="filtroMedida" placeholder="Buscar Medida (Ej. 295/80)" 
-                       class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full placeholder-zinc-600">
-
-                <button onclick="ejecutarFiltros()" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl font-black uppercase text-[11px] tracking-widest transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="3" stroke-linecap="round"/></svg>
-                    Buscar
-                </button>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="space-y-1">
+                    <label class="text-[9px] font-black text-zinc-500 uppercase tracking-widest">Departamento</label>
+                    <select id="departamento" onchange="updateCiudades()" class="form-input p-3 w-full text-xs">
+                        <option value="Santa Cruz" selected>Santa Cruz</option>
+                        <option value="La Paz">La Paz</option>
+                        <option value="Cochabamba">Cochabamba</option>
+                        <option value="Beni">Beni</option>
+                        <option value="Pando">Pando</option>
+                        <option value="Oruro">Oruro</option>
+                        <option value="Potosí">Potosí</option>
+                        <option value="Tarija">Tarija</option>
+                        <option value="Chuquisaca">Chuquisaca</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[9px] font-black text-zinc-500 uppercase tracking-widest">Ciudad</label>
+                    <select id="ciudad" class="form-input p-3 w-full text-xs">
+                        <option value="Santa Cruz de la Sierra">Santa Cruz de la Sierra</option>
+                    </select>
+                </div>
             </div>
+
+            <div class="flex items-center gap-3 mb-6 bg-zinc-900 p-3 rounded-xl border border-white/5">
+                <input type="checkbox" id="quiereFactura" class="w-4 h-4 accent-red-600 rounded bg-zinc-800 border-zinc-700">
+                <label for="quiereFactura" class="text-[10px] font-black text-zinc-300 uppercase tracking-widest cursor-pointer">Requiere Factura Fiscal</label>
+            </div>
+
+            <button onclick="enviarPedidoWA()" class="w-full bg-red-600 hover:bg-white hover:text-black py-4 rounded-xl font-black uppercase text-[11px] tracking-widest transition-all active:scale-95 shadow-xl flex justify-center items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Enviar Pedido a WhatsApp
+            </button>
         </div>
     </div>
 
-    <main class="max-w-6xl mx-auto px-6 pb-24">
+    <nav class="fixed w-full z-40 glass border-b border-white/5 top-0">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <span class="text-2xl font-black italic uppercase tracking-tighter">GLOBAL<span class="text-red-600">TYRE</span></span>
+            <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest text-zinc-400">
+                <a href="#" class="text-white">Inicio</a>
+                <a href="#catalogo">Catálogo</a>
+            </div>
+            <a href="https://wa.me/59176395001" class="bg-zinc-900 border border-white/10 text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest">Atención 24/7</a>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-16 flex flex-col items-center justify-center hero-bg">
+        <div class="text-center z-10 px-6 max-w-4xl" data-aos="fade-up">
+            <h1 class="text-5xl md:text-8xl font-black uppercase mb-4 leading-none">EQUIPA TU <br><span class="text-red-600 italic tracking-tighter">FLOTA</span></h1>
+            <p class="text-zinc-400 font-bold text-[10px] uppercase tracking-[0.6em] mb-12">Logística y Distribución Nacional | Bolivia</p>
+        </div>
+    </section>
+
+    <div class="max-w-4xl mx-auto px-6 relative z-30 -mt-10 mb-20" id="catalogo">
+        <div class="glass p-6 md:p-8 rounded-[2.5rem] shadow-2xl border-red-600/30 flex flex-col md:flex-row gap-4">
+            <input type="text" id="filtroMedida" onkeyup="ejecutarFiltros()" placeholder="Buscar Medida o Modelo..." class="form-input p-4 w-full md:w-2/3 text-xs">
+            <select id="filtroPosicion" onchange="ejecutarFiltros()" class="form-input p-4 w-full md:w-1/3 text-xs">
+                <option value="TODAS">Eje (Todos)</option>
+                <option value="DIRECCIÓN">Dirección</option>
+                <option value="TRACCIÓN">Tracción</option>
+            </select>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-6 pb-32">
         <div id="grid-camion" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </main>
 
-    <footer class="glass border-t border-red-600/20 pt-16 pb-8" id="contacto">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-center md:text-left">
-                <div>
-                    <span class="text-2xl font-black italic uppercase tracking-tighter mb-4 block">GLOBAL<span class="text-red-600">TYRE</span></span>
-                    <p class="text-zinc-500 text-xs leading-relaxed max-w-xs mx-auto md:mx-0">El distribuidor líder en Bolivia de neumáticos para transporte pesado. Tecnología e ingeniería de clase mundial.</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-black uppercase text-[11px] tracking-[0.3em] mb-6">Oficina Central</h4>
-                    <p class="text-zinc-400 text-sm font-bold mb-2">Santa Cruz de la Sierra</p>
-                    <p class="text-zinc-500 text-xs">Estado Plurinacional de Bolivia</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-black uppercase text-[11px] tracking-[0.3em] mb-6">Contacto Directo</h4>
-                    <p class="text-red-500 text-lg font-black tracking-tighter mb-1">+591 76395001</p>
-                    <p class="text-zinc-500 text-xs">Atención corporativa para flotas</p>
-                </div>
-            </div>
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
-                <p class="text-zinc-600 font-bold uppercase text-[9px] tracking-widest">© 2026 GLOBAL TYRE. Todos los derechos reservados.</p>
-                <p class="text-zinc-600 font-bold uppercase text-[9px] tracking-widest">Desarrollado para Grupo Limex SRL</p>
+    <footer class="glass border-t border-red-600/20 py-16 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <p class="text-red-600 text-3xl font-black italic uppercase mb-2">Global Tyre Bolivia</p>
+            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.5em] mb-8">Estrategia Industrial & Logística</p>
+            <div class="flex justify-center gap-8 text-[11px] font-black text-zinc-400">
+                <span>Santa Cruz</span><span>•</span><span>76395001</span><span>•</span><span>Grupo Limex</span>
             </div>
         </div>
     </footer>
 
     <script>
+        const ciudadesBolivia = {
+            "Santa Cruz": ["Santa Cruz de la Sierra", "Montero", "Warnes", "La Guardia", "San Ignacio", "Camiri"],
+            "La Paz": ["La Paz", "El Alto", "Viacha", "Caranavi"],
+            "Cochabamba": ["Cochabamba", "Sacaba", "Quillacollo", "Villa Tunari"],
+            "Beni": ["Trinidad", "Riberalta", "Guayaramerín", "San Borja"],
+            "Pando": ["Cobija"], "Oruro": ["Oruro", "Challapata"],
+            "Potosí": ["Potosí", "Uyuni", "Villazón"], "Tarija": ["Tarija", "Yacuiba"], "Chuquisaca": ["Sucre"]
+        };
+
         let baseDatos = [];
+        let carrito = []; 
 
         async function init() {
             try {
                 const res = await fetch('llantas_maxell_camion.json');
+                if (!res.ok) throw new Error("No se pudo cargar el archivo JSON");
                 baseDatos = await res.json();
                 render(baseDatos);
+                updateCiudades();
                 AOS.init({ duration: 800, once: true });
-            } catch (e) {
-                document.getElementById('grid-camion').innerHTML = "<p class='text-zinc-500 text-center col-span-full'>Cargando catálogo...</p>";
+            } catch (error) { 
+                console.error("Error cargando catálogo:", error);
+                document.getElementById('grid-camion').innerHTML = `
+                    <div class="col-span-full bg-red-900/20 border border-red-500 p-8 rounded-2xl text-center">
+                        <p class="text-red-500 font-black uppercase tracking-widest text-sm mb-2">¡Ups! Error de conexión con la base de datos</p>
+                        <p class="text-zinc-400 text-xs">Por favor, asegúrate de que el archivo 'llantas_maxell_camion.json' esté subido a GitHub sin errores de formato.</p>
+                    </div>`;
+            } finally {
+                setTimeout(() => {
+                    const loader = document.getElementById('loader');
+                    if (loader) { loader.style.opacity = '0'; loader.style.visibility = 'hidden'; }
+                }, 1000);
             }
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            const overlay = document.getElementById('cart-overlay');
+            if(modal.classList.contains('cart-closed')) {
+                modal.classList.remove('cart-closed');
+                modal.classList.add('cart-open');
+                overlay.classList.remove('overlay-closed');
+                overlay.classList.add('overlay-open');
+            } else {
+                modal.classList.remove('cart-open');
+                modal.classList.add('cart-closed');
+                overlay.classList.remove('overlay-open');
+                overlay.classList.add('overlay-closed');
+            }
+        }
+
+        function updateCiudades() {
+            const dpto = document.getElementById('departamento').value;
+            const citySelect = document.getElementById('ciudad');
+            citySelect.innerHTML = ciudadesBolivia[dpto].map(c => `<option value="${c}">${c}</option>`).join('');
+        }
+
+        function modificarCantidad(index, cambio) {
+            const qtyElement = document.getElementById(`qty-val-${index}`);
+            let qty = parseInt(qtyElement.innerText) + cambio;
+            if (qty < 1) qty = 1; 
+            qtyElement.innerText = qty;
+        }
+
+        function modificarCantidadCarrito(indexCarrito, cambio) {
+            carrito[indexCarrito].cantidad += cambio;
+            if (carrito[indexCarrito].cantidad < 1) carrito[indexCarrito].cantidad = 1;
+            actualizarUI();
+        }
+
+        function agregarAlCarrito(index, medida, modelo) {
+            const cantidad = parseInt(document.getElementById(`qty-val-${index}`).innerText);
+            const itemExistente = carrito.find(item => item.medida === medida && item.modelo === modelo);
+            if(itemExistente) { itemExistente.cantidad += cantidad; } 
+            else { carrito.push({ medida, modelo, cantidad }); }
+            actualizarUI();
+            
+            const btn = document.getElementById(`btn-add-${index}`);
+            const textOriginal = btn.innerHTML;
+            btn.innerHTML = "¡AÑADIDO AL CARRITO!";
+            btn.classList.add('bg-white', 'text-black');
+            btn.classList.remove('text-white');
+            
+            setTimeout(() => {
+                btn.innerHTML = textOriginal;
+                btn.classList.remove('bg-white', 'text-black');
+                btn.classList.add('text-white');
+            }, 1000);
+        }
+
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            actualizarUI();
+        }
+
+        function actualizarUI() {
+            const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+            document.getElementById('cart-badge').innerText = totalItems;
+            
+            const cartItemsContainer = document.getElementById('cart-items');
+            if(carrito.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center text-zinc-500 text-xs font-bold uppercase tracking-widest mt-10">El carrito está vacío</p>';
+                return;
+            }
+
+            cartItemsContainer.innerHTML = carrito.map((item, i) => `
+                <div class="bg-zinc-900/50 border border-white/5 rounded-xl p-4 flex justify-between items-center shadow-lg">
+                    <div class="flex-1">
+                        <p class="text-white font-black italic uppercase text-lg tracking-tighter leading-none">${item.medida}</p>
+                        <p class="text-red-600 text-[10px] font-black uppercase tracking-widest mb-3">${item.modelo}</p>
+                        <div class="flex items-center gap-3">
+                            <button onclick="modificarCantidadCarrito(${i}, -1)" class="w-7 h-7 rounded bg-zinc-800 border border-zinc-700 text-white font-black hover:bg-red-600 transition-colors flex items-center justify-center text-sm active:scale-95">-</button>
+                            <span class="text-white font-black text-sm w-4 text-center">${item.cantidad}</span>
+                            <button onclick="modificarCantidadCarrito(${i}, 1)" class="w-7 h-7 rounded bg-zinc-800 border border-zinc-700 text-white font-black hover:bg-red-600 transition-colors flex items-center justify-center text-sm active:scale-95">+</button>
+                        </div>
+                    </div>
+                    <button onclick="eliminarDelCarrito(${i})" class="w-10 h-10 ml-4 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all active:scale-95">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                </div>
+            `).join('');
         }
 
         function render(items) {
             const grid = document.getElementById('grid-camion');
-            if(items.length === 0) {
-                grid.innerHTML = "<p class='text-center col-span-full py-20 text-zinc-600 font-black uppercase text-xs tracking-widest'>Sin resultados para esta búsqueda</p>";
-                return;
-            }
-            grid.innerHTML = items.map(l => `
-                <div class="glass p-8 rounded-[2rem] product-card flex flex-col justify-between h-full bg-zinc-900/40" data-aos="fade-up">
-                    <div>
-                        <div class="flex justify-between items-start mb-6">
-                            <span class="bg-zinc-950 border border-white/5 text-zinc-300 text-[9px] px-3 py-1.5 rounded font-black uppercase tracking-widest">${l.posicion || l.categoria}</span>
-                            <span class="text-2xl font-black text-white tracking-tighter">${l.precio} BS</span>
-                        </div>
-                        <h3 class="text-3xl font-black text-white mb-1 uppercase tracking-tighter italic leading-none">${l.medida}</h3>
-                        <p class="text-red-600 text-[11px] font-black mb-6 uppercase tracking-widest">${l.modelo}</p>
-                        <p class="text-zinc-400 text-[11px] mb-8 font-medium leading-relaxed uppercase">${l.desc}</p>
+            grid.innerHTML = items.map((l, i) => `
+                <div class="glass p-8 rounded-[2.5rem] product-card flex flex-col h-full border border-white/5" data-aos="fade-up">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="bg-red-600/20 text-red-500 text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest border border-red-600/30">${l.posicion || l.categoria}</span>
+                        <span class="text-2xl font-black text-white tracking-tighter">${l.precio} BS</span>
                     </div>
-                    <button onclick="solicitarWA('${l.medida}', '${l.modelo}')" class="w-full bg-transparent border-2 border-red-600 text-white hover:bg-red-600 py-4 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all active:scale-95 mt-auto">
-                        Cotizar
+                    <h3 class="text-3xl font-black text-white mb-1 uppercase tracking-tighter italic leading-none">${l.medida}</h3>
+                    <p class="text-red-600 text-[10px] font-black mb-4 uppercase tracking-[0.2em]">${l.modelo}</p>
+                    <p class="text-zinc-500 text-[10px] mb-6 font-medium flex-grow leading-relaxed uppercase">${l.desc}</p>
+                    
+                    <div class="flex items-center justify-between bg-zinc-900/50 p-3 rounded-2xl mb-4 border border-white/5">
+                        <span class="text-[9px] font-black text-zinc-500 uppercase tracking-widest">Unidades:</span>
+                        <div class="flex items-center gap-3">
+                            <button onclick="modificarCantidad(${i}, -1)" class="w-8 h-8 rounded-lg bg-zinc-800 text-white font-black hover:bg-red-600 transition-colors flex items-center justify-center text-lg active:scale-95">-</button>
+                            <span id="qty-val-${i}" class="text-white font-black text-lg w-6 text-center">1</span>
+                            <button onclick="modificarCantidad(${i}, 1)" class="w-8 h-8 rounded-lg bg-zinc-800 text-white font-black hover:bg-red-600 transition-colors flex items-center justify-center text-lg active:scale-95">+</button>
+                        </div>
+                    </div>
+
+                    <button id="btn-add-${i}" onclick="agregarAlCarrito(${i}, '${l.medida}', '${l.modelo}')" class="w-full bg-transparent border-2 border-red-600 text-white hover:bg-red-600 py-4 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all active:scale-95 mt-auto">
+                        Añadir al Carrito
                     </button>
                 </div>
             `).join('');
         }
 
         function ejecutarFiltros() {
-            const posicion = document.getElementById('filtroPosicion').value;
-            const medida = document.getElementById('filtroMedida').value.toLowerCase().trim();
-            let filtrados = baseDatos;
-            if (medida !== "") { filtrados = filtrados.filter(p => p.medida.toLowerCase().includes(medida) || p.modelo.toLowerCase().includes(medida)); }
-            if (posicion !== "TODAS") { filtrados = filtrados.filter(p => p.categoria === posicion); }
-            render(filtrados);
+            const pos = document.getElementById('filtroPosicion').value;
+            const med = document.getElementById('filtroMedida').value.toLowerCase();
+            let res = baseDatos.filter(p => p.medida.toLowerCase().includes(med) || p.modelo.toLowerCase().includes(med));
+            if(pos !== 'TODAS') res = res.filter(p => p.categoria === pos || p.posicion === pos);
+            render(res);
         }
 
-        function solicitarWA(medida, modelo) {
-            const msg = `*TIRE SELECTOR GLOBAL TYRE*\n\nHola, solicito información técnica y cotización para:\n📦 *Medida:* ${medida}\n🛞 *Modelo:* ${modelo}\n📍 *Ubicación:* Santa Cruz`;
+        function enviarPedidoWA() {
+            if(carrito.length === 0) {
+                alert("Por favor, añada llantas al carrito antes de cotizar.");
+                return;
+            }
+            const dpto = document.getElementById('departamento').value;
+            const ciudad = document.getElementById('ciudad').value;
+            const factura = document.getElementById('quiereFactura').checked ? "SÍ (Adjuntaré NIT al chat)" : "NO";
+            
+            let detalleCarrito = "";
+            carrito.forEach(item => { detalleCarrito += `• ${item.cantidad}x ${item.modelo} (${item.medida})\n`; });
+
+            const msg = `*NUEVO PEDIDO B2B - GLOBAL TYRE*\n\n🛒 *DETALLE DEL CARRITO:*\n${detalleCarrito}\n📍 *Destino Logístico:* ${ciudad}, ${dpto}\n📄 *Requiere Factura:* ${factura}\n\nQuedo atento a la disponibilidad, flete y opciones de pago.`;
             window.open(`https://wa.me/59176395001?text=${encodeURIComponent(msg)}`, '_blank');
         }
-        init();
+
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
