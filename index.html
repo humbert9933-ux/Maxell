@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Tyre | Importación de Llantas Alto Tonelaje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        :root { --brand-red: #dc2626; --brand-black: #09090b; }
+        body { 
+            background: var(--brand-black); color: #fafafa; 
+            /* Textura de carretera/asfalto */
+            background-image: url('https://www.transparenttextures.com/patterns/asphalt.png');
+            background-attachment: fixed; font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass { background: rgba(15, 15, 18, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(220, 38, 38, 0.15); }
+        .hero-bg { background: linear-gradient(180deg, rgba(220,38,38,0.25) 0%, rgba(9,9,11,1) 100%); }
+        .product-card { transition: all 0.4s ease; border-top: 3px solid transparent; }
+        .product-card:hover { transform: translateY(-8px); border-top-color: var(--brand-red); box-shadow: 0 15px 30px rgba(220, 38, 38, 0.1); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Selectores personalizados estilo Maxell Official */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+        
+        /* Estilos de líneas de carretera desvanecidas */
+        .road-line { position: fixed; width: 100%; height: 100%; top: 0; left: 0; opacity: 0.15; z-index: -1; pointer-events: none; }
+        .road-line::after { content: ''; position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 3px; height: 100%; background: repeating-linear-gradient(180deg, #facc15 0, #facc15 40px, transparent 40px, transparent 80px); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <svg class="road-line" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" opacity="0.1">
+        <defs>
+            <pattern id="roadPattern" x="0" y="0" width="100" height="200" patternUnits="userSpaceOnWrite">
+                <rect x="49" y="0" width="2" height="120" fill="#facc15" />
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#roadPattern)" />
+    </svg>
+
+    <nav class="fixed w-full z-50 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-black italic uppercase tracking-tighter">GLOBAL<span class="text-red-600">TYRE</span></span>
+            </div>
+            <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest text-zinc-400">
+                <a href="#" class="text-white hover:text-red-500 transition-colors">Inicio</a>
+                <a href="#catalogo" class="hover:text-red-500 transition-colors">Catálogo</a>
+                <a href="#contacto" class="hover:text-red-500 transition-colors">Contacto Flotas</a>
+            </div>
+            <a href="https://wa.me/59176395001" target="_blank" class="bg-red-600 text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-colors shadow-lg shadow-red-900/50">
+                Asesoría 24/7
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 flex flex-col items-center justify-center overflow-hidden hero-bg">
+        <div class="text-center z-10 px-6 max-w-4xl" data-aos="fade-up">
+            <span class="bg-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-red-600/30 mb-6 inline-block">División Transporte Pesado</span>
+            <h1 class="text-5xl md:text-7xl font-black uppercase mb-4 leading-none">Nacidos para la <br><span class="text-red-600 italic tracking-tighter">Excelencia</span></h1>
+            <p class="text-zinc-400 font-medium text-sm md:text-base mb-10 max-w-2xl mx-auto">Nuevo diseño de patrones de alta calidad. Mayor kilometraje, durabilidad extrema y máxima capacidad de carga para las rutas de Bolivia.</p>
+        </div>
+    </section>
+
+    <div class="max-w-5xl mx-auto px-6 relative z-30 -mt-10 mb-16" id="catalogo">
+        <div class="glass p-6 md:p-8 rounded-[2rem] shadow-2xl">
+            <div class="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
+                <div class="w-2 h-6 bg-red-600 rounded-full"></div>
+                <h2 class="text-lg font-black uppercase tracking-widest">Selector de Llantas</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <select id="filtroPosicion" class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full cursor-pointer transition-colors">
+                    <option value="TODAS">Posición (Todas)</option>
+                    <option value="DIRECCIÓN">Eje de Dirección</option>
+                    <option value="TRACCIÓN">Eje de Tracción</option>
+                </select>
+                
+                <select id="filtroAplicacion" class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full cursor-pointer transition-colors">
+                    <option value="TODAS">Aplicación (Todas)</option>
+                    <option value="Larga Distancia">Larga Distancia</option>
+                    <option value="On/Off Road">Mixta / Off-Road</option>
+                </select>
+
+                <input type="text" id="filtroMedida" placeholder="Buscar Medida (Ej. 295/80)" 
+                       class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full placeholder-zinc-600">
+
+                <button onclick="ejecutarFiltros()" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl font-black uppercase text-[11px] tracking-widest transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="3" stroke-linecap="round"/></svg>
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-6 pb-24">
+        <div id="grid-camion" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </main>
+
+    <footer class="glass border-t border-red-600/20 pt-16 pb-8" id="contacto">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-center md:text-left">
+                <div>
+                    <span class="text-2xl font-black italic uppercase tracking-tighter mb-4 block">GLOBAL<span class="text-red-600">TYRE</span></span>
+                    <p class="text-zinc-500 text-xs leading-relaxed max-w-xs mx-auto md:mx-0">El distribuidor líder en Bolivia de neumáticos para transporte pesado. Tecnología e ingeniería de clase mundial.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-black uppercase text-[11px] tracking-[0.3em] mb-6">Oficina Central</h4>
+                    <p class="text-zinc-400 text-sm font-bold mb-2">Santa Cruz de la Sierra</p>
+                    <p class="text-zinc-500 text-xs">Estado Plurinacional de Bolivia</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-black uppercase text-[11px] tracking-[0.3em] mb-6">Contacto Directo</h4>
+                    <p class="text-red-500 text-lg font-black tracking-tighter mb-1">+591 76395001</p>
+                    <p class="text-zinc-500 text-xs">Atención corporativa para flotas</p>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+                <p class="text-zinc-600 font-bold uppercase text-[9px] tracking-widest">© 2026 GLOBAL TYRE. Todos los derechos reservados.</p>
+                <p class="text-zinc-600 font-bold uppercase text-[9px] tracking-widest">Desarrollado para Grupo Limex SRL</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let baseDatos = [];
+
+        async function init() {
+            try {
+                const res = await fetch('llantas_maxell_camion.json');
+                baseDatos = await res.json();
+                render(baseDatos);
+                AOS.init({ duration: 800, once: true });
+            } catch (e) {
+                document.getElementById('grid-camion').innerHTML = "<p class='text-zinc-500 text-center col-span-full'>Cargando catálogo...</p>";
+            }
+        }
+
+        function render(items) {
+            const grid = document.getElementById('grid-camion');
+            if(items.length === 0) {
+                grid.innerHTML = "<p class='text-center col-span-full py-20 text-zinc-600 font-black uppercase text-xs tracking-widest'>Sin resultados para esta búsqueda</p>";
+                return;
+            }
+            grid.innerHTML = items.map(l => `
+                <div class="glass p-8 rounded-[2rem] product-card flex flex-col justify-between h-full bg-zinc-900/40" data-aos="fade-up">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="bg-zinc-950 border border-white/5 text-zinc-300 text-[9px] px-3 py-1.5 rounded font-black uppercase tracking-widest">${l.posicion || l.categoria}</span>
+                            <span class="text-2xl font-black text-white tracking-tighter">${l.precio} BS</span>
+                        </div>
+                        <h3 class="text-3xl font-black text-white mb-1 uppercase tracking-tighter italic leading-none">${l.medida}</h3>
+                        <p class="text-red-600 text-[11px] font-black mb-6 uppercase tracking-widest">${l.modelo}</p>
+                        <p class="text-zinc-400 text-[11px] mb-8 font-medium leading-relaxed uppercase">${l.desc}</p>
+                    </div>
+                    <button onclick="solicitarWA('${l.medida}', '${l.modelo}')" class="w-full bg-transparent border-2 border-red-600 text-white hover:bg-red-600 py-4 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all active:scale-95 mt-auto">
+                        Cotizar
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function ejecutarFiltros() {
+            const posicion = document.getElementById('filtroPosicion').value;
+            const medida = document.getElementById('filtroMedida').value.toLowerCase().trim();
+            let filtrados = baseDatos;
+            if (medida !== "") { filtrados = filtrados.filter(p => p.medida.toLowerCase().includes(medida) || p.modelo.toLowerCase().includes(medida)); }
+            if (posicion !== "TODAS") { filtrados = filtrados.filter(p => p.categoria === posicion); }
+            render(filtrados);
+        }
+
+        function solicitarWA(medida, modelo) {
+            const msg = `*TIRE SELECTOR GLOBAL TYRE*\n\nHola, solicito información técnica y cotización para:\n📦 *Medida:* ${medida}\n🛞 *Modelo:* ${modelo}\n📍 *Ubicación:* Santa Cruz`;
+            window.open(`https://wa.me/59176395001?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+        init();
+    </script>
+</body>
+</html>
