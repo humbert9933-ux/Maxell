@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Tyre | Heavy Duty Division</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        :root { --brand-red: #dc2626; --brand-black: #09090b; }
+        body { 
+            background: var(--brand-black); color: #fafafa; 
+            /* Textura de carretera/asfalto */
+            background-image: url('https://www.transparenttextures.com/patterns/asphalt.png');
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass { background: rgba(15, 15, 18, 0.98); backdrop-filter: blur(12px); border: 1px solid rgba(220, 38, 38, 0.2); }
+        .road-gradient { background: linear-gradient(180deg, rgba(220, 38, 38, 0.2) 0%, rgba(9, 9, 11, 0) 100%); }
+        .product-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .product-card:hover { transform: translateY(-10px); border-color: var(--brand-red); box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Animación de línea de carretera */
+        .road-line { height: 4px; background: repeating-linear-gradient(90deg, #facc15 0, #facc15 40px, transparent 40px, transparent 80px); width: 100%; opacity: 0.3; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <section class="relative h-[55vh] flex flex-col items-center justify-center overflow-hidden road-gradient">
+        <div class="text-center z-10 px-6" data-aos="zoom-out">
+            <h1 class="text-6xl md:text-9xl font-black italic tracking-tighter uppercase mb-0">GLOBAL<span class="text-red-600">TYRE</span></h1>
+            <div class="road-line my-4"></div>
+            <p class="text-zinc-400 font-bold uppercase text-[10px] tracking-[0.6em]">Importación & Distribución de Llantas de Alto Tonelaje</p>
+            
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <span class="bg-red-600 px-4 py-2 rounded-lg text-[9px] font-black text-white uppercase italic tracking-widest shadow-lg shadow-red-900/50">Resistencia Extrema</span>
+                <span class="bg-zinc-900 border border-white/10 px-4 py-2 rounded-lg text-[9px] font-black text-white uppercase italic tracking-widest">Tecnología de Acero 4 Correas</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-6xl mx-auto px-6 mb-12 -mt-12 relative z-30">
+        <div class="glass p-4 rounded-3xl flex flex-col md:flex-row gap-4 items-center border-red-600/30 shadow-2xl">
+            <input type="text" id="searchInput" onkeyup="filtrar()" placeholder="Buscar por medida o modelo de llanta..." 
+                   class="w-full md:w-1/2 bg-zinc-900/80 border-none rounded-2xl p-5 text-sm font-bold focus:ring-2 focus:ring-red-600 outline-none text-white placeholder-zinc-600">
+            
+            <div class="flex gap-2 overflow-x-auto no-scrollbar w-full md:w-1/2">
+                <button onclick="filtrarPosicion('TODAS')" class="bg-red-600 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase whitespace-nowrap shadow-lg">Todas las Unidades</button>
+                <button onclick="filtrarPosicion('DIRECCIÓN')" class="bg-zinc-900 text-zinc-400 px-6 py-3 rounded-2xl text-[10px] font-black uppercase whitespace-nowrap hover:bg-zinc-800 hover:text-white transition-all">Dirección</button>
+                <button onclick="filtrarPosicion('TRACCIÓN')" class="bg-zinc-900 text-zinc-400 px-6 py-3 rounded-2xl text-[10px] font-black uppercase whitespace-nowrap hover:bg-zinc-800 hover:text-white transition-all">Tracción</button>
+                <button onclick="filtrarPosicion('FUERA DE CAMINO')" class="bg-zinc-900 text-zinc-400 px-6 py-3 rounded-2xl text-[10px] font-black uppercase whitespace-nowrap hover:bg-zinc-800 hover:text-white transition-all">On/Off Road</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-6 pb-24">
+        <div id="grid-camion" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            </div>
+    </main>
+
+    <footer class="max-w-6xl mx-auto px-6 py-16 border-t border-zinc-900 text-center space-y-10">
+        <div class="flex flex-col md:flex-row justify-center items-center gap-16">
+            <div class="text-center md:text-left">
+                <p class="text-[10px] font-black text-red-600 uppercase tracking-[0.4em] mb-2">Base Logística Nacional</p>
+                <p class="text-lg font-bold text-zinc-200 uppercase tracking-tighter">Santa Cruz de la Sierra, Bolivia</p>
+            </div>
+            <div class="text-center md:text-left">
+                <p class="text-
+
