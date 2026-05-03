@@ -1,0 +1,75 @@
+[
+    {
+        "marca": "MAXELL",
+        "medida": "11R22.5-16 16PR",
+        "modelo": "SUPER LD9",
+        "precio": 2400,
+        "categoria": "TRACCIÓN",
+        "desc": "Estructura de cinturón de 4 capas, alto kilometraje y buen confort."
+    },
+    {
+        "marca": "MAXELL",
+        "medida": "295/80R22.5-20",
+        "modelo": "SUPER LD2",
+        "precio": 2950,
+        "categoria": "TRACCIÓN",
+        "desc": "Alambre de acero para cinturón de súper alta resistencia."
+    },
+    {
+        "marca": "MAXELL",
+        "medida": "295/80R22.5-20",
+        "modelo": "SUPER HA1",
+        "precio": 3150,
+        "categoria": "DIRECCIÓN",
+        "desc": "Diseño de doble capa de caucho, fórmula de alta resistencia al desgaste."
+    },
+    {
+        "marca": "MAXELL",
+        "medida": "315/80R22.5-22",
+        "modelo": "SUPER HA13",
+        "precio": 3300,
+        "categoria": "DIRECCIÓN",
+        "desc": "Diseño de núcleo de caucho de doble compuesto para un soporte fuerte."
+    },
+    {
+        "marca": "MAXELL",
+        "medida": "9.5R17.5-18",
+        "modelo": "SUPER LD2",
+        "precio": 1350,
+        "categoria": "TRACCIÓN",
+        "desc": "Diseño especial de goma base, que reduce la generación de calor en los hombros."
+    },
+    {
+        "marca": "MAXELL",
+        "medida": "385/65R22.5-24",
+        "modelo": "SUPER HA1",
+        "precio": 3650,
+        "categoria": "DIRECCIÓN",
+        "desc": "Capa interna con compuesto de baja generación de calor para extender la vida útil."
+    },
+    {
+        "marca": "MAXELL",
+        "medida": "215/75R17.5-16",
+        "modelo": "SUPER HA11",
+        "precio": 1200,
+        "categoria": "DIRECCIÓN",
+        "desc": "Material de talón engrosado, permitiéndole adaptarse a diversas condiciones."
+    },
+    {
+        "marca": "MAXELL",
+        "medida": "235/75R17.5-18",
+        "modelo": "SUPER HA11",
+        "precio": 1300,
+        "categoria": "DIRECCIÓN",
+        "desc": "Material de talón engrosado que aumenta la rigidez general del neumático."
+    },
+    {
+        "marca": "MAXELL",
+        "medida": "275/80R22.5-18",
+        "modelo": "SUPER LD21",
+        "precio": 2300,
+        "categoria": "TRACCIÓN",
+        "desc": "Para servicio de transporte de media y larga distancia."
+    }
+]
+
