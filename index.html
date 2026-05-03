@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Tyre | Importación de Llantas Alto Tonelaje</title>
+    <title>Global Tyre | Heavy Duty Division</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -12,113 +12,155 @@
         body { 
             background: var(--brand-black); color: #fafafa; 
             background-image: url('https://www.transparenttextures.com/patterns/asphalt.png');
-            background-attachment: fixed;
-            font-family: 'Inter', sans-serif;
+            background-attachment: fixed; font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
-        .glass { background: rgba(15, 15, 18, 0.95); backdrop-filter: blur(16px); border: 1px solid rgba(220, 38, 38, 0.15); }
+        .glass { background: rgba(15, 15, 18, 0.98); backdrop-filter: blur(12px); border: 1px solid rgba(220, 38, 38, 0.2); }
         .hero-bg { background: linear-gradient(180deg, rgba(220,38,38,0.25) 0%, rgba(9,9,11,1) 100%); }
-        .product-card { transition: all 0.4s ease; border-top: 3px solid transparent; }
-        .product-card:hover { transform: translateY(-8px); border-top-color: var(--brand-red); box-shadow: 0 15px 30px rgba(220, 38, 38, 0.1); }
+        .product-card { transition: all 0.4s ease; }
+        .product-card:hover { transform: translateY(-8px); border-color: var(--brand-red); box-shadow: 0 15px 30px rgba(220, 38, 38, 0.15); }
+        .form-input { background: #18181b; border: 1px solid #27272a; border-radius: 0.75rem; color: white; font-weight: 700; transition: 0.3s; }
+        .form-input:focus { border-color: var(--brand-red); outline: none; box-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
+        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='red' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
         
-        /* Selectores personalizados estilo Maxell Official */
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
+        /* ANIMACIÓN DE CARGA (PRELOADER) */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--brand-black); z-index: 99999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background-image: url('https://www.transparenttextures.com/patterns/asphalt.png');
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
+        .tire-spinner {
+            width: 100px; height: 100px;
+            border: 12px dashed #27272a;
+            border-top-color: var(--brand-red);
+            border-bottom-color: var(--brand-red);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 20px rgba(220, 38, 38, 0.3);
+        }
+        .tire-spinner::after {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px; height: 40px;
+            background: #18181b; border: 4px solid #3f3f46;
+            border-radius: 50%;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="antialiased">
 
-    <nav class="fixed w-full z-50 glass border-b-0 border-t-0 border-l-0 border-r-0 border-b border-white/5">
+    <div id="loader">
+        <div class="tire-spinner mb-6"></div>
+        <h2 class="text-white font-black italic text-2xl tracking-tighter uppercase mb-1">GLOBAL<span class="text-red-600">TYRE</span></h2>
+        <p class="text-zinc-500 text-[10px] uppercase font-bold tracking-[0.4em] animate-pulse">Cargando Catálogo...</p>
+    </div>
+
+    <nav class="fixed w-full z-50 glass border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl font-black italic uppercase tracking-tighter">GLOBAL<span class="text-red-600">TYRE</span></span>
-            </div>
+            <span class="text-2xl font-black italic uppercase tracking-tighter">GLOBAL<span class="text-red-600">TYRE</span></span>
             <div class="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-widest text-zinc-400">
                 <a href="#" class="text-white hover:text-red-500 transition-colors">Inicio</a>
-                <a href="#catalogo" class="hover:text-red-500 transition-colors">Catálogo de Llantas</a>
-                <a href="#contacto" class="hover:text-red-500 transition-colors">Contacto Flotas</a>
+                <a href="#catalogo" class="hover:text-red-500 transition-colors">Catálogo</a>
+                <a href="#datos-pedido" class="hover:text-red-500 transition-colors">Cotización</a>
             </div>
-            <a href="https://wa.me/59176395001" target="_blank" class="bg-red-600 text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-colors shadow-lg shadow-red-900/50">
-                Asesoría 24/7
-            </a>
+            <a href="https://wa.me/59176395001" class="bg-red-600 text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-all shadow-lg">76395001</a>
         </div>
     </nav>
 
-    <section class="relative pt-32 pb-20 flex flex-col items-center justify-center overflow-hidden hero-bg">
+    <section class="relative pt-32 pb-16 flex flex-col items-center justify-center hero-bg">
         <div class="text-center z-10 px-6 max-w-4xl" data-aos="fade-up">
-            <span class="bg-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-red-600/30 mb-6 inline-block">División Transporte Pesado</span>
-            <h1 class="text-5xl md:text-7xl font-black uppercase mb-4 leading-none">Nacidos para la <br><span class="text-red-600 italic tracking-tighter">Excelencia</span></h1>
-            <p class="text-zinc-400 font-medium text-sm md:text-base mb-10 max-w-2xl mx-auto">Nuevo diseño de patrones de alta calidad. Mayor kilometraje, durabilidad extrema y máxima capacidad de carga para las rutas de Bolivia.</p>
+            <h1 class="text-5xl md:text-8xl font-black uppercase mb-4 leading-none">EQUIPA TU <br><span class="text-red-600 italic tracking-tighter">FLOTA</span></h1>
+            <p class="text-zinc-400 font-bold text-[10px] uppercase tracking-[0.6em] mb-12">Logística y Distribución Nacional | Santa Cruz, Bolivia</p>
         </div>
     </section>
 
-    <div class="max-w-5xl mx-auto px-6 relative z-30 -mt-10 mb-16" id="catalogo">
-        <div class="glass p-6 md:p-8 rounded-[2rem] shadow-2xl">
-            <div class="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
-                <div class="w-2 h-6 bg-red-600 rounded-full"></div>
-                <h2 class="text-lg font-black uppercase tracking-widest">Selector de Llantas</h2>
-            </div>
+    <div class="max-w-6xl mx-auto px-6 relative z-30 -mt-10 mb-20" id="catalogo">
+        <div class="glass p-8 rounded-[2.5rem] shadow-2xl border-red-600/30">
+            <h2 class="text-lg font-black uppercase tracking-widest mb-8 border-l-4 border-red-600 pl-4">Configurar Mi Cotización</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <select id="filtroPosicion" class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full cursor-pointer transition-colors">
-                    <option value="TODAS">Posición (Todas)</option>
-                    <option value="DIRECCIÓN">Eje de Dirección</option>
-                    <option value="TRACCIÓN">Eje de Tracción</option>
-                </select>
-                
-                <select id="filtroAplicacion" class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full cursor-pointer transition-colors">
-                    <option value="TODAS">Aplicación (Todas)</option>
-                    <option value="Larga Distancia">Larga Distancia</option>
-                    <option value="On/Off Road">Mixta / Off-Road</option>
-                </select>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Medida / Modelo</label>
+                    <input type="text" id="filtroMedida" onkeyup="ejecutarFiltros()" placeholder="Ej. 295/80" class="form-input p-4 w-full text-xs">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Eje / Posición</label>
+                    <select id="filtroPosicion" onchange="ejecutarFiltros()" class="form-input p-4 w-full text-xs">
+                        <option value="TODAS">Todas</option>
+                        <option value="DIRECCIÓN">Dirección</option>
+                        <option value="TRACCIÓN">Tracción</option>
+                    </select>
+                </div>
 
-                <input type="text" id="filtroMedida" placeholder="Buscar Medida (Ej. 295/80)" 
-                       class="bg-zinc-900/80 border border-white/5 rounded-xl p-4 text-[11px] font-black uppercase text-white outline-none focus:border-red-600 w-full placeholder-zinc-600">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Departamento Destino</label>
+                    <select id="departamento" onchange="updateCiudades()" class="form-input p-4 w-full text-xs">
+                        <option value="Santa Cruz" selected>Santa Cruz</option>
+                        <option value="La Paz">La Paz</option>
+                        <option value="Cochabamba">Cochabamba</option>
+                        <option value="Beni">Beni</option>
+                        <option value="Pando">Pando</option>
+                        <option value="Oruro">Oruro</option>
+                        <option value="Potosí">Potosí</option>
+                        <option value="Tarija">Tarija</option>
+                        <option value="Chuquisaca">Chuquisaca</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Ciudad / Municipio</label>
+                    <select id="ciudad" class="form-input p-4 w-full text-xs">
+                        <option value="Santa Cruz de la Sierra">Santa Cruz de la Sierra</option>
+                    </select>
+                </div>
+            </div>
 
-                <button onclick="ejecutarFiltros()" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl font-black uppercase text-[11px] tracking-widest transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="3" stroke-linecap="round"/></svg>
-                    Buscar
-                </button>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 p-6 bg-zinc-900/50 rounded-2xl border border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="quiereFactura" class="sr-only peer">
+                        <div class="w-11 h-6 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                        <span class="ml-3 text-[10px] font-black text-zinc-400 uppercase tracking-widest">¿Requiere Factura Fiscal?</span>
+                    </div>
+                </div>
+                <div class="text-[10px] font-black text-zinc-500 italic uppercase">
+                    * Todos los precios incluyen impuestos de ley
+                </div>
             </div>
         </div>
     </div>
 
     <main class="max-w-6xl mx-auto px-6 pb-24">
-        <h3 class="text-center text-zinc-500 font-black text-[10px] uppercase tracking-[0.5em] mb-12">Catálogo de Alto Rendimiento Truck & Bus</h3>
-        <div id="grid-camion" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            </div>
+        <div id="grid-camion" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </main>
 
-    <footer class="glass border-t border-red-600/20 pt-16 pb-8" id="contacto">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-center md:text-left">
-                <div>
-                    <span class="text-2xl font-black italic uppercase tracking-tighter mb-4 block">GLOBAL<span class="text-red-600">TYRE</span></span>
-                    <p class="text-zinc-500 text-xs leading-relaxed max-w-xs mx-auto md:mx-0">El distribuidor líder en Bolivia de neumáticos para transporte pesado. Tecnología e ingeniería de clase mundial.</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-black uppercase text-[11px] tracking-[0.3em] mb-6">Oficina Central</h4>
-                    <p class="text-zinc-400 text-sm font-bold mb-2">Santa Cruz de la Sierra</p>
-                    <p class="text-zinc-500 text-xs">Estado Plurinacional de Bolivia</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-black uppercase text-[11px] tracking-[0.3em] mb-6">Contacto Directo</h4>
-                    <p class="text-red-500 text-lg font-black tracking-tighter mb-1">+591 76395001</p>
-                    <p class="text-zinc-500 text-xs">Atención corporativa para flotas</p>
-                </div>
-            </div>
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
-                <p class="text-zinc-600 font-bold uppercase text-[9px] tracking-widest">© 2026 GLOBAL TYRE. Todos los derechos reservados.</p>
-                <p class="text-zinc-600 font-bold uppercase text-[9px] tracking-widest">Desarrollado para Grupo Limex SRL</p>
+    <footer class="glass border-t border-red-600/20 py-16 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <p class="text-red-600 text-3xl font-black italic uppercase mb-2">Global Tyre Bolivia</p>
+            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.5em] mb-8">Estrategia Industrial & Logística</p>
+            <div class="flex justify-center gap-8 text-[11px] font-black text-zinc-400">
+                <span>Santa Cruz</span>
+                <span>•</span>
+                <span>Distribución 76395001</span>
+                <span>•</span>
+                <span>Grupo Limex SRL</span>
             </div>
         </div>
     </footer>
 
     <script>
+        const ciudadesBolivia = {
+            "Santa Cruz": ["Santa Cruz de la Sierra", "Montero", "Warnes", "La Guardia", "San Ignacio", "Camiri"],
+            "La Paz": ["La Paz", "El Alto", "Viacha", "Caranavi"],
+            "Cochabamba": ["Cochabamba", "Sacaba", "Quillacollo", "Villa Tunari"],
+            "Beni": ["Trinidad", "Riberalta", "Guayaramerín", "San Borja"],
+            "Pando": ["Cobija"], "Oruro": ["Oruro", "Challapata"],
+            "Potosí": ["Potosí", "Uyuni", "Villazón"], "Tarija": ["Tarija", "Yacuiba"], "Chuquisaca": ["Sucre"]
+        };
+
         let baseDatos = [];
 
         async function init() {
@@ -126,62 +168,66 @@
                 const res = await fetch('llantas_maxell_camion.json');
                 baseDatos = await res.json();
                 render(baseDatos);
+                updateCiudades();
                 AOS.init({ duration: 800, once: true });
-            } catch (e) {
-                document.getElementById('grid-camion').innerHTML = "<p class='text-zinc-500 text-center col-span-full'>Cargando catálogo...</p>";
+                
+                // Ocultar la pantalla de carga de manera suave
+                setTimeout(() => {
+                    const loader = document.getElementById('loader');
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                }, 1000); // Se muestra 1 segundo mínimo para que se vea el efecto
+
+            } catch (e) { 
+                console.error("Error cargando catálogo."); 
+                document.getElementById('loader').innerHTML = "<h2 class='text-white'>Error al cargar. Revise el archivo JSON.</h2>";
             }
+        }
+
+        function updateCiudades() {
+            const dpto = document.getElementById('departamento').value;
+            const citySelect = document.getElementById('ciudad');
+            citySelect.innerHTML = ciudadesBolivia[dpto].map(c => `<option value="${c}">${c}</option>`).join('');
         }
 
         function render(items) {
             const grid = document.getElementById('grid-camion');
-            if(items.length === 0) {
-                grid.innerHTML = "<p class='text-center col-span-full py-20 text-zinc-600 font-black uppercase text-xs tracking-widest'>Sin resultados para esta búsqueda</p>";
-                return;
-            }
             grid.innerHTML = items.map(l => `
-                <div class="glass p-8 rounded-[2rem] product-card flex flex-col justify-between h-full bg-zinc-900/40" data-aos="fade-up">
-                    <div>
-                        <div class="flex justify-between items-start mb-6">
-                            <span class="bg-zinc-950 border border-white/5 text-zinc-300 text-[9px] px-3 py-1.5 rounded font-black uppercase tracking-widest">${l.posicion || l.categoria}</span>
-                            <span class="text-2xl font-black text-white tracking-tighter">${l.precio} BS</span>
-                        </div>
-                        <h3 class="text-3xl font-black text-white mb-1 uppercase tracking-tighter italic leading-none">${l.medida}</h3>
-                        <p class="text-red-600 text-[11px] font-black mb-6 uppercase tracking-widest">${l.modelo}</p>
-                        <p class="text-zinc-400 text-[11px] mb-8 font-medium leading-relaxed uppercase">${l.desc}</p>
+                <div class="glass p-8 rounded-[2.5rem] product-card flex flex-col border border-white/5" data-aos="fade-up">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="bg-red-600/20 text-red-500 text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest border border-red-600/30">${l.posicion || l.categoria}</span>
+                        <span class="text-2xl font-black text-white tracking-tighter">${l.precio} BS</span>
                     </div>
-                    <button onclick="solicitarWA('${l.medida}', '${l.modelo}')" class="w-full bg-transparent border-2 border-red-600 text-white hover:bg-red-600 py-4 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all active:scale-95 mt-auto">
-                        Cotizar
+                    <h3 class="text-3xl font-black text-white mb-1 uppercase tracking-tighter italic leading-none">${l.medida}</h3>
+                    <p class="text-red-600 text-[10px] font-black mb-4 uppercase tracking-[0.2em]">${l.modelo}</p>
+                    <p class="text-zinc-500 text-[10px] mb-8 font-medium leading-relaxed uppercase">${l.desc}</p>
+                    <button onclick="solicitarWA('${l.medida}', '${l.modelo}')" class="w-full bg-red-600 hover:bg-white hover:text-black py-4 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all active:scale-95 shadow-xl">
+                        Solicitar Cotización
                     </button>
                 </div>
             `).join('');
         }
 
-        // Lógica del "Tire Selector"
         function ejecutarFiltros() {
-            const posicion = document.getElementById('filtroPosicion').value;
-            const medida = document.getElementById('filtroMedida').value.toLowerCase().trim();
-            
-            let filtrados = baseDatos;
-
-            // Filtrar por texto de medida
-            if (medida !== "") {
-                filtrados = filtrados.filter(p => p.medida.toLowerCase().includes(medida) || p.modelo.toLowerCase().includes(medida));
-            }
-
-            // Filtrar por selector de posición
-            if (posicion !== "TODAS") {
-                filtrados = filtrados.filter(p => p.categoria === posicion);
-            }
-
-            render(filtrados);
+            const pos = document.getElementById('filtroPosicion').value;
+            const med = document.getElementById('filtroMedida').value.toLowerCase();
+            let res = baseDatos.filter(p => p.medida.toLowerCase().includes(med) || p.modelo.toLowerCase().includes(med));
+            if(pos !== 'TODAS') res = res.filter(p => p.categoria === pos || p.posicion === pos);
+            render(res);
         }
 
         function solicitarWA(medida, modelo) {
-            const msg = `*TIRE SELECTOR GLOBAL TYRE*\n\nHola, solicito información técnica y cotización para:\n📦 *Medida:* ${medida}\n🛞 *Modelo:* ${modelo}\n📍 *Ubicación:* Santa Cruz`;
+            const dpto = document.getElementById('departamento').value;
+            const ciudad = document.getElementById('ciudad').value;
+            const factura = document.getElementById('quiereFactura').checked ? "SÍ (NIT/Razón Social al contacto)" : "NO";
+            
+            const msg = `*COTIZACIÓN GLOBAL TYRE*\n\n🛞 *Producto:* ${modelo} - ${medida}\n📍 *Destino:* ${ciudad}, ${dpto}\n📄 *Factura:* ${factura}\n\nQuedo atento a la disponibilidad y costo de flete.`;
+            
             window.open(`https://wa.me/59176395001?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        init();
+        // Inicializar
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
