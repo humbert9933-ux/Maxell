@@ -233,11 +233,16 @@
             actualizarUI();
         }
 
-        function agregarAlCarrito(index, medida, modelo) {
+        // SE ACTUALIZÓ PARA RECIBIR EL PRECIO
+        function agregarAlCarrito(index, medida, modelo, precio) {
             const cantidad = parseInt(document.getElementById(`qty-val-${index}`).innerText);
             const itemExistente = carrito.find(item => item.medida === medida && item.modelo === modelo);
-            if(itemExistente) { itemExistente.cantidad += cantidad; } 
-            else { carrito.push({ medida, modelo, cantidad }); }
+            
+            if(itemExistente) { 
+                itemExistente.cantidad += cantidad; 
+            } else { 
+                carrito.push({ medida, modelo, precio, cantidad }); 
+            }
             actualizarUI();
             
             const btn = document.getElementById(`btn-add-${index}`);
@@ -260,6 +265,7 @@
 
         function actualizarUI() {
             const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+            const totalPrecio = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
             document.getElementById('cart-badge').innerText = totalItems;
             
             const cartItemsContainer = document.getElementById('cart-items');
@@ -268,77 +274,22 @@
                 return;
             }
 
+            // AHORA SE MUESTRA EL SUBTOTAL POR LLANTA
             cartItemsContainer.innerHTML = carrito.map((item, i) => `
                 <div class="bg-zinc-900/50 border border-white/5 rounded-xl p-4 flex justify-between items-center shadow-lg">
                     <div class="flex-1">
                         <p class="text-white font-black italic uppercase text-lg tracking-tighter leading-none">${item.medida}</p>
-                        <p class="text-red-600 text-[10px] font-black uppercase tracking-widest mb-3">${item.modelo}</p>
+                        <p class="text-red-600 text-[10px] font-black uppercase tracking-widest mb-1">${item.modelo}</p>
+                        <p class="text-zinc-400 text-[10px] font-bold mb-3">${item.precio} BS x und.</p>
                         <div class="flex items-center gap-3">
                             <button onclick="modificarCantidadCarrito(${i}, -1)" class="w-7 h-7 rounded bg-zinc-800 border border-zinc-700 text-white font-black hover:bg-red-600 transition-colors flex items-center justify-center text-sm active:scale-95">-</button>
                             <span class="text-white font-black text-sm w-4 text-center">${item.cantidad}</span>
                             <button onclick="modificarCantidadCarrito(${i}, 1)" class="w-7 h-7 rounded bg-zinc-800 border border-zinc-700 text-white font-black hover:bg-red-600 transition-colors flex items-center justify-center text-sm active:scale-95">+</button>
                         </div>
                     </div>
-                    <button onclick="eliminarDelCarrito(${i})" class="w-10 h-10 ml-4 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all active:scale-95">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function render(items) {
-            const grid = document.getElementById('grid-camion');
-            grid.innerHTML = items.map((l, i) => `
-                <div class="glass p-8 rounded-[2.5rem] product-card flex flex-col h-full border border-white/5" data-aos="fade-up">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="bg-red-600/20 text-red-500 text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest border border-red-600/30">${l.posicion || l.categoria}</span>
-                        <span class="text-2xl font-black text-white tracking-tighter">${l.precio} BS</span>
-                    </div>
-                    <h3 class="text-3xl font-black text-white mb-1 uppercase tracking-tighter italic leading-none">${l.medida}</h3>
-                    <p class="text-red-600 text-[10px] font-black mb-4 uppercase tracking-[0.2em]">${l.modelo}</p>
-                    <p class="text-zinc-500 text-[10px] mb-6 font-medium flex-grow leading-relaxed uppercase">${l.desc}</p>
-                    
-                    <div class="flex items-center justify-between bg-zinc-900/50 p-3 rounded-2xl mb-4 border border-white/5">
-                        <span class="text-[9px] font-black text-zinc-500 uppercase tracking-widest">Unidades:</span>
-                        <div class="flex items-center gap-3">
-                            <button onclick="modificarCantidad(${i}, -1)" class="w-8 h-8 rounded-lg bg-zinc-800 text-white font-black hover:bg-red-600 transition-colors flex items-center justify-center text-lg active:scale-95">-</button>
-                            <span id="qty-val-${i}" class="text-white font-black text-lg w-6 text-center">1</span>
-                            <button onclick="modificarCantidad(${i}, 1)" class="w-8 h-8 rounded-lg bg-zinc-800 text-white font-black hover:bg-red-600 transition-colors flex items-center justify-center text-lg active:scale-95">+</button>
-                        </div>
-                    </div>
-
-                    <button id="btn-add-${i}" onclick="agregarAlCarrito(${i}, '${l.medida}', '${l.modelo}')" class="w-full bg-transparent border-2 border-red-600 text-white hover:bg-red-600 py-4 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all active:scale-95 mt-auto">
-                        Añadir al Carrito
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function ejecutarFiltros() {
-            const pos = document.getElementById('filtroPosicion').value;
-            const med = document.getElementById('filtroMedida').value.toLowerCase();
-            let res = baseDatos.filter(p => p.medida.toLowerCase().includes(med) || p.modelo.toLowerCase().includes(med));
-            if(pos !== 'TODAS') res = res.filter(p => p.categoria === pos || p.posicion === pos);
-            render(res);
-        }
-
-        function enviarPedidoWA() {
-            if(carrito.length === 0) {
-                alert("Por favor, añada llantas al carrito antes de cotizar.");
-                return;
-            }
-            const dpto = document.getElementById('departamento').value;
-            const ciudad = document.getElementById('ciudad').value;
-            const factura = document.getElementById('quiereFactura').checked ? "SÍ (Adjuntaré NIT al chat)" : "NO";
-            
-            let detalleCarrito = "";
-            carrito.forEach(item => { detalleCarrito += `• ${item.cantidad}x ${item.modelo} (${item.medida})\n`; });
-
-            const msg = `*NUEVO PEDIDO B2B - GLOBAL TYRE*\n\n🛒 *DETALLE DEL CARRITO:*\n${detalleCarrito}\n📍 *Destino Logístico:* ${ciudad}, ${dpto}\n📄 *Requiere Factura:* ${factura}\n\nQuedo atento a la disponibilidad, flete y opciones de pago.`;
-            window.open(`https://wa.me/59176395001?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        window.addEventListener('load', init);
-    </script>
-</body>
-</html>
+                    <div class="flex flex-col items-end gap-2 ml-4">
+                        <span class="text-white font-black text-lg">${item.precio * item.cantidad} BS</span>
+                        <button onclick="eliminarDelCarrito(${i})" class="w-10 h-10 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all active:scale-95">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </d
